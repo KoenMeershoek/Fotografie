@@ -45,7 +45,7 @@ nav {
   padding: 0 48px;
   height: 64px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
 }
 
@@ -81,7 +81,7 @@ nav {
 
 .nav-brand {
   display: flex;
-  align-items: center;
+  align-self: center;
   opacity: 0.85;
   transition: opacity 0.2s ease;
 }
@@ -91,7 +91,7 @@ nav {
 }
 
 .nav-brand img {
-  height: 48px;
+  height: 56px;
   width: auto;
   display: block;
 }
