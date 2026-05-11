@@ -271,7 +271,7 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
-  padding: 0 48px 96px;
+  padding: 96px 48px 96px;
   max-width: 1100px;
 }
 
@@ -279,7 +279,7 @@ main {
   .about-grid {
     grid-template-columns: 1fr;
     gap: 48px;
-    padding: 0 24px 72px;
+    padding: 72px 24px 72px;
   }
   .page-header { padding: 80px 24px 40px; }
 }
