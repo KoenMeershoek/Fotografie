@@ -227,7 +227,8 @@ main {
   inset: 0;
   background: rgba(28, 28, 26, 0);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
   transition: background 0.3s ease;
 }
@@ -237,9 +238,11 @@ main {
 }
 
 .photo-caption {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
-  font-style: italic;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: white;
   opacity: 0;
   transform: translateY(6px);
