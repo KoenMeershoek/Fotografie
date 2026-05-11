@@ -79,6 +79,21 @@ nav {
   color: var(--text);
 }
 
+.nav-brand {
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.12em !important;
+  color: var(--text) !important;
+  border: 1px solid var(--text);
+  padding: 3px 8px;
+  transition: background 0.2s ease, color 0.2s ease !important;
+}
+
+.nav-brand:hover {
+  background: var(--text);
+  color: var(--bg) !important;
+}
+
 /* ---- PAGINA WRAPPER ---- */
 
 main {
