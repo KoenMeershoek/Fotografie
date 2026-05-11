@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact - Jouw Naam Fotografie</title>
+  <meta name="description" content="Neem contact op met [Jouw Naam] voor opdrachten of samenwerkingen." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVIGATIE -->
+  <nav>
+    <a href="index.html" class="nav-logo">Jouw Naam</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Portfolio</a></li>
+      <li><a href="about.html">Over mij</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Contact</h1>
+    </div>
+
+    <div class="contact-grid">
+
+      <!-- CONTACTGEGEVENS -->
+      <div class="contact-info">
+
+        <p>
+          Heb je een opdracht, wil je samenwerken of heb je gewoon een vraag? Stuur me een bericht en ik reageer zo snel mogelijk.
+        </p>
+
+        <!-- Vervang de onderstaande gegevens door die van jou -->
+        <div class="contact-detail">
+          <label>E-mail</label>
+          <a href="mailto:jij@voorbeeld.nl">jij@voorbeeld.nl</a>
+        </div>
+
+        <div class="contact-detail">
+          <label>Telefoon</label>
+          <a href="tel:+31612345678">+31 6 12 34 56 78</a>
+        </div>
+
+        <div class="contact-detail">
+          <label>Gevestigd in</label>
+          <span>Den Haag, Nederland</span>
+        </div>
+
+        <div class="contact-detail">
+          <label>Instagram</label>
+          <a href="https://instagram.com/jouwnaam" target="_blank" rel="noopener">@jouwnaam</a>
+        </div>
+
+      </div>
+
+      <!-- CONTACTFORMULIER
+           Dit formulier stuurt nu nog niks.
+           Zie de README voor instructies om het werkend te maken via Netlify Forms.
+      -->
+      <form
+        class="contact-form"
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <!-- Verborgen veld voor Netlify spam-beveiliging -->
+        <input type="hidden" name="form-name" value="contact" />
+        <p style="display:none"><input name="bot-field" /></p>
+
+        <div class="form-group">
+          <label for="name">Naam</label>
+          <input type="text" id="name" name="name" placeholder="Jan de Vries" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mailadres</label>
+          <input type="email" id="email" name="email" placeholder="jan@voorbeeld.nl" required />
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Onderwerp</label>
+          <input type="text" id="subject" name="subject" placeholder="Opdracht / Samenwerking / Vraag" />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Bericht</label>
+          <textarea id="message" name="message" placeholder="Vertel me meer..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Versturen</button>
+
+      </form>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Jouw Naam. Alle rechten voorbehouden.</p>
+    <a href="contact.html">Contact opnemen</a>
+  </footer>
+
+</body>
+</html>
