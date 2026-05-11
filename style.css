@@ -62,12 +62,15 @@ nav.scrolled {
   letter-spacing: 0.04em;
   color: var(--text);
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .nav-links {
   display: flex;
   gap: 48px;
   list-style: none;
+  align-items: center;
 }
 
 .nav-links a {
