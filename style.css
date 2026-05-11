@@ -80,18 +80,20 @@ nav {
 }
 
 .nav-brand {
-  font-size: 11px !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.12em !important;
-  color: var(--text) !important;
-  border: 1px solid var(--text);
-  padding: 3px 8px;
-  transition: background 0.2s ease, color 0.2s ease !important;
+  display: flex;
+  align-items: center;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
 }
 
 .nav-brand:hover {
-  background: var(--text);
-  color: var(--bg) !important;
+  opacity: 1;
+}
+
+.nav-brand img {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 
 /* ---- PAGINA WRAPPER ---- */
