@@ -7,7 +7,7 @@
 }
 
 :root {
-  --bg: #f8f6f2;
+  --bg: #ffffff;
   --surface: #ffffff;
   --text: #1c1c1a;
   --text-muted: #8a8680;
@@ -91,7 +91,7 @@ nav {
 }
 
 .nav-brand img {
-  height: 36px;
+  height: 48px;
   width: auto;
   display: block;
 }
