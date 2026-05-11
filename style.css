@@ -175,12 +175,12 @@ main {
 }
 
 .photo-grid {
-  columns: 3;
-  column-gap: 16px;
+  columns: 2;
+  column-gap: 24px;
 }
 
 @media (max-width: 900px) {
-  .photo-grid { columns: 2; }
+  .photo-grid { columns: 1; }
   nav { padding: 0 24px; }
   .hero { padding: 72px 24px 48px; }
   .grid-section { padding: 0 24px 72px; }
