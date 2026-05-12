@@ -553,6 +553,7 @@ footer a:hover {
   columns: 2;
   column-gap: 24px;
   padding: 96px 96px 48px;
+  overflow: hidden;
 }
 
 .project-grid .photo-item:hover img {
@@ -563,13 +564,8 @@ footer a:hover {
   background: transparent;
 }
 
-@media (max-width: 900px) {
-  .project-grid { columns: 1; padding: 72px 48px 48px; }
-}
-
 .project-back {
-  padding: 0 48px 96px;
-  max-width: 1200px;
+  padding: 0 96px 96px;
 }
 
 .project-back a {
@@ -583,13 +579,9 @@ footer a:hover {
   color: var(--text-muted);
 }
 
-@media (max-width: 800px) {
-  .project-grid {
-    padding: 72px 24px 72px;
-  }
-  .project-back {
-    padding: 0 24px 72px;
-  }
+@media (max-width: 900px) {
+  .project-grid { columns: 1; padding: 72px 48px 48px; }
+  .project-back { padding: 0 48px 72px; }
 }
 
 /* ---- ANIMATIES ---- */
