@@ -293,7 +293,7 @@ main {
   width: 100%;
   aspect-ratio: 4/5;
   object-fit: cover;
-  object-position: 25% center;
+  object-position: 31% center;
   background: var(--border);
 }
 
