@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Roboto:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Roboto:wght@300;400;700&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -57,9 +57,9 @@ nav.scrolled {
 
 .nav-logo {
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  font-weight: 700;
   font-size: 28px;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.01em;
   color: var(--text);
   text-decoration: none;
   display: flex;
@@ -364,18 +364,19 @@ main {
 }
 
 .contact-intro-label {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 28px;
-  font-weight: 300;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: var(--text);
   margin-bottom: 8px;
 }
 
 .contact-intro-name {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 13px;
+  font-weight: 300;
   letter-spacing: 0.04em;
   color: var(--text-muted);
   margin-bottom: 40px;
