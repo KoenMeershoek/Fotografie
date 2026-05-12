@@ -306,7 +306,7 @@ main {
 }
 
 .about-content p {
-  color: var(--text-muted);
+  color: var(--text);
   margin-bottom: 16px;
   line-height: 1.75;
 }
@@ -364,7 +364,7 @@ main {
 }
 
 .contact-info p {
-  color: var(--text-muted);
+  color: var(--text);
   line-height: 1.75;
   margin-bottom: 32px;
 }
