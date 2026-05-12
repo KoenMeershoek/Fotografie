@@ -379,6 +379,39 @@ main {
   margin-bottom: 40px;
 }
 
+.contact-direct {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.contact-direct a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.contact-direct a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-social {
+  display: flex;
+  gap: 16px;
+}
+
+.contact-social a {
+  color: var(--text);
+  transition: opacity 0.2s ease;
+}
+
+.contact-social a:hover {
+  opacity: 0.5;
+}
+
 .contact-info p {
   color: var(--text);
   line-height: 1.75;
