@@ -555,6 +555,14 @@ footer a:hover {
   padding: 96px 96px 48px;
 }
 
+.project-grid .photo-item:hover img {
+  transform: none;
+}
+
+.project-grid .photo-item:hover .photo-overlay {
+  background: transparent;
+}
+
 @media (max-width: 900px) {
   .project-grid { columns: 1; padding: 72px 48px 48px; }
 }
