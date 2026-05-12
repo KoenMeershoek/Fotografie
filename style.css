@@ -250,11 +250,11 @@ main {
     align-items: flex-start;
     justify-content: center;
     gap: 0;
-    padding: 80px 48px;
-    z-index: 101;
+    padding: 80px 40px;
+    z-index: 99;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.1);
     display: flex;
   }
 
@@ -266,11 +266,16 @@ main {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 100;
+    background: rgba(0,0,0,0.4);
+    z-index: 98;
   }
 
   .nav-overlay.open { display: block; }
+
+  nav {
+    background: #ffffff;
+    z-index: 100;
+  }
 
   .nav-links li {
     list-style: none;
