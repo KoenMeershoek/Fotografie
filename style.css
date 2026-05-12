@@ -152,7 +152,7 @@ main {
 /* ---- FOTO GRID ---- */
 
 .grid-section {
-  padding: 96px 48px 96px;
+  padding: 96px 96px 96px;
 }
 
 .grid-filter {
@@ -193,7 +193,7 @@ main {
   .photo-grid { columns: 1; }
   nav { padding: 0 40px; }
   .hero { padding: 72px 24px 48px; }
-  .grid-section { padding: 72px 24px 72px; }
+  .grid-section { padding: 72px 48px 72px; }
 }
 
 @media (max-width: 560px) {
