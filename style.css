@@ -550,17 +550,13 @@ footer a:hover {
 /* ---- PROJECT PAGES ---- */
 
 .project-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  padding: 96px 48px 96px;
-  max-width: 1200px;
+  columns: 2;
+  column-gap: 24px;
+  padding: 96px 96px 48px;
 }
 
-.project-grid img {
-  width: 100%;
-  height: auto;
-  display: block;
+@media (max-width: 900px) {
+  .project-grid { columns: 1; padding: 72px 48px 48px; }
 }
 
 .project-back {
