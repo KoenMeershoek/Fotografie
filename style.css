@@ -242,19 +242,17 @@ main {
     position: fixed;
     top: 72px;
     right: 0;
-    width: 75vw;
-    max-width: 320px;
+    width: 100%;
     height: calc(100% - 72px);
     background: #ffffff;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0;
-    padding: 40px;
+    padding: 24px 40px;
     z-index: 99;
     transform: translateX(100%);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: -4px 0 24px rgba(0,0,0,0.1);
     display: flex;
   }
 
