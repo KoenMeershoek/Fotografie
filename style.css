@@ -688,6 +688,54 @@ footer a:hover {
   .project-back { padding: 0 48px 72px; }
 }
 
+/* ---- PUBLICATIES ---- */
+
+.publicaties-list {
+  padding: 0 96px 96px;
+  max-width: 900px;
+}
+
+.publicatie-item {
+  display: flex;
+  gap: 48px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: baseline;
+}
+
+.publicatie-item:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.publicatie-jaar {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: var(--text-muted);
+  min-width: 48px;
+}
+
+.publicatie-info h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.publicatie-info p {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 900px) {
+  .publicaties-list { padding: 0 48px 72px; }
+}
+
+@media (max-width: 560px) {
+  .publicaties-list { padding: 0 24px 72px; }
+  .publicatie-item { gap: 24px; }
+}
+
 /* ---- ANIMATIES ---- */
 
 @keyframes fadeUp {
