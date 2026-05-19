@@ -100,6 +100,10 @@ body.menu-open { overflow: hidden; }
   gap: 48px;
   list-style: none;
   align-items: center;
+  position: fixed;
+  top: 0;
+  right: 48px;
+  height: 72px;
 }
 
 .nav-links a {
