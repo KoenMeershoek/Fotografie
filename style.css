@@ -104,6 +104,7 @@ body.menu-open { overflow: hidden; }
   top: 0;
   right: 48px;
   height: 72px;
+  z-index: 101;
 }
 
 .nav-links a {
