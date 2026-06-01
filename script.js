@@ -57,44 +57,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightbox = document.getElementById('lightbox');
   if (lightbox) {
     const lightboxImg = document.getElementById('lightbox-img');
+    let images = [];
+    let currentIndex = 0;
 
-    document.querySelectorAll('.publicatie-cover img').forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
-        lightbox.classList.add('open');
-        document.body.classList.add('menu-open');
-      });
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImg.src = images[currentIndex].src;
+      lightboxImg.alt = images[currentIndex].alt;
+      lightbox.classList.add('open');
+      document.body.classList.add('menu-open');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      lightboxImg.src = images[currentIndex].src;
+      lightboxImg.alt = images[currentIndex].alt;
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex + 1) % images.length;
+      lightboxImg.src = images[currentIndex].src;
+      lightboxImg.alt = images[currentIndex].alt;
+    }
+
+    document.querySelectorAll('.publicatie-cover img').forEach((img, i) => {
+      images.push(img);
+      img.addEventListener('click', () => openLightbox(i));
     });
 
-    document.querySelectorAll('.project-grid .photo-item').forEach(item => {
+    document.querySelectorAll('.project-grid .photo-item').forEach((item, i) => {
       item.style.cursor = 'pointer';
-      item.addEventListener('click', () => {
-        const img = item.querySelector('img');
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt;
-        lightbox.classList.add('open');
-        document.body.classList.add('menu-open');
-      });
+      const img = item.querySelector('img');
+      images.push(img);
+      item.addEventListener('click', () => openLightbox(images.indexOf(img)));
     });
 
     lightbox.addEventListener('click', (e) => {
-      if (e.target !== lightboxImg) {
-        lightbox.classList.remove('open');
-        document.body.classList.remove('menu-open');
-      }
+      if (e.target !== lightboxImg) closeLightbox();
     });
 
-    document.querySelector('.lightbox-close').addEventListener('click', () => {
-      lightbox.classList.remove('open');
-      document.body.classList.remove('menu-open');
-    });
+    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        lightbox.classList.remove('open');
-        document.body.classList.remove('menu-open');
-      }
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
     });
   }
 });
