@@ -27,6 +27,33 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', closeMenu);
   });
 
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = contactForm.querySelector('.btn-submit');
+      btn.textContent = 'Versturen...';
+      btn.disabled = true;
+      try {
+        const response = await fetch('https://formspree.io/f/mwvzdrqw', {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          contactForm.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          btn.textContent = 'Probeer opnieuw';
+          btn.disabled = false;
+        }
+      } catch {
+        btn.textContent = 'Probeer opnieuw';
+        btn.disabled = false;
+      }
+    });
+  }
+
   const lightbox = document.getElementById('lightbox');
   if (lightbox) {
     const lightboxImg = document.getElementById('lightbox-img');

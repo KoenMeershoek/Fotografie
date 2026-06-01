@@ -63,11 +63,8 @@
       -->
       <form
         class="contact-form"
-        method="POST"
-        action="https://formspree.io/f/mwvzdrqw"
+        id="contact-form"
       >
-        <input type="hidden" name="_next" value="https://koenmeershoek.nl/bedankt.html" />
-
         <div class="form-group">
           <label for="name">Naam</label>
           <input type="text" id="name" name="name" placeholder="Jan de Vries" required />
@@ -91,6 +88,11 @@
         <button type="submit" class="btn-submit">Versturen</button>
 
       </form>
+
+      <div id="form-success" style="display:none;">
+        <p class="hero-label" style="margin-bottom: 16px;">Bericht ontvangen</p>
+        <p style="color: var(--text-muted); line-height: 1.75;">Bedankt! Je bericht is goed aangekomen. Ik neem zo snel mogelijk contact met je op.</p>
+      </div>
 
     </div>
 
