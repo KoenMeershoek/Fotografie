@@ -383,6 +383,7 @@ main {
   gap: 80px;
   padding: 96px 48px 96px;
   max-width: 1100px;
+  margin: 0 auto;
 }
 
 @media (max-width: 800px) {
@@ -458,6 +459,7 @@ main {
   gap: 80px;
   padding: 96px 48px 96px;
   max-width: 900px;
+  margin: 0 auto;
 }
 
 @media (max-width: 800px) {
