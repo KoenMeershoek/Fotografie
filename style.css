@@ -648,6 +648,22 @@ footer a:hover {
   color: var(--text);
 }
 
+.footer-social {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-social a {
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  font-size: 0;
+}
+
+.footer-social a:hover {
+  color: var(--text);
+}
+
 /* ---- PROJECT PAGES ---- */
 
 .project-grid {
