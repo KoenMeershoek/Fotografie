@@ -726,6 +726,39 @@ footer a:hover {
   .project-back { padding: 0 48px 72px; }
 }
 
+/* ---- STAGGER GRID (Valckensteyn) ---- */
+
+.project-grid-stagger {
+  display: flex;
+  gap: 24px;
+  padding: 96px 96px 48px;
+}
+
+.stagger-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.stagger-col--offset {
+  padding-top: 120px;
+}
+
+.stagger-col .photo-item {
+  break-inside: avoid;
+}
+
+@media (max-width: 768px) {
+  .project-grid-stagger {
+    flex-direction: column;
+    padding: 72px 24px 48px;
+  }
+  .stagger-col--offset {
+    padding-top: 0;
+  }
+}
+
 /* ---- PUBLICATIES ---- */
 
 .publicaties-grid {
