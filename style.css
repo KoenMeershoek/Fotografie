@@ -687,6 +687,39 @@ footer a:hover {
 
 /* ---- PUBLICATIES ---- */
 
+.publicaties-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  padding: 64px 96px 96px;
+}
+
+.publicatie-cover img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.publicatie-cover:hover img {
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .publicaties-grid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 48px 48px 72px;
+  }
+}
+
+@media (max-width: 560px) {
+  .publicaties-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 40px 24px 72px;
+  }
+}
+
 .publicaties-list {
   padding: 0 96px 96px;
   max-width: 900px;
