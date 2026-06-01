@@ -26,4 +26,37 @@ document.addEventListener('DOMContentLoaded', () => {
   links.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeMenu);
   });
+
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox) {
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.publicatie-cover img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('open');
+        document.body.classList.add('menu-open');
+      });
+    });
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target !== lightboxImg) {
+        lightbox.classList.remove('open');
+        document.body.classList.remove('menu-open');
+      }
+    });
+
+    document.querySelector('.lightbox-close').addEventListener('click', () => {
+      lightbox.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('open');
+        document.body.classList.remove('menu-open');
+      }
+    });
+  }
 });
