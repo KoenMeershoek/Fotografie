@@ -103,6 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
 
+    const prevBtn = document.querySelector('.lightbox-prev');
+    const nextBtn = document.querySelector('.lightbox-next');
+    if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+    if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+
     document.addEventListener('keydown', (e) => {
       if (!lightbox.classList.contains('open')) return;
       if (e.key === 'Escape') closeLightbox();
