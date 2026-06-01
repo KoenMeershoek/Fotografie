@@ -648,10 +648,29 @@ footer a:hover {
   color: var(--text);
 }
 
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .footer-social {
   display: flex;
   gap: 16px;
   align-items: center;
+}
+
+.footer-contact-link {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-contact-link:hover {
+  color: var(--text);
 }
 
 .footer-social a {
