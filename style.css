@@ -698,12 +698,20 @@ footer a:hover {
   overflow: hidden;
 }
 
-.project-grid .photo-item:hover img {
+.project-grid .photo-item:hover img,
+.stagger-col .photo-item:hover img {
   transform: none;
+  opacity: 0.8;
 }
 
-.project-grid .photo-item:hover .photo-overlay {
+.project-grid .photo-item:hover .photo-overlay,
+.stagger-col .photo-item:hover .photo-overlay {
   background: transparent;
+}
+
+.project-grid .photo-item img,
+.stagger-col .photo-item img {
+  transition: opacity 0.2s ease;
 }
 
 .project-back {
