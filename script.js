@@ -58,8 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
   if (lightbox) {
     const lightboxImg = document.getElementById('lightbox-img');
 
-    document.querySelectorAll('.publicatie-cover img, .project-grid .photo-item img').forEach(img => {
+    document.querySelectorAll('.publicatie-cover img').forEach(img => {
       img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('open');
+        document.body.classList.add('menu-open');
+      });
+    });
+
+    document.querySelectorAll('.project-grid .photo-item').forEach(item => {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt;
         lightbox.classList.add('open');
