@@ -695,14 +695,18 @@ footer a:hover {
 }
 
 .publicatie-cover {
-  aspect-ratio: 3/4;
+  aspect-ratio: 3/2;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
 .publicatie-cover img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
   transition: opacity 0.2s ease;
 }
