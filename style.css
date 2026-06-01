@@ -491,8 +491,8 @@ main {
 }
 
 .contact-direct a {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
   color: var(--text);
   text-decoration: none;
 }
