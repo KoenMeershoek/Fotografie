@@ -803,7 +803,8 @@ footer a:hover {
   background: none;
   border: none;
   color: white;
-  font-size: 32px;
+  font-size: 48px;
+  line-height: 1;
   cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.2s ease;
