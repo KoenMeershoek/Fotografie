@@ -71,8 +71,8 @@ nav.scrolled {
   position: relative;
 }
 
-.nav-logo-light { font-weight: 300; }
-.nav-logo-bold  { font-weight: 700; }
+.nav-logo-light { font-weight: 700; }
+.nav-logo-bold  { font-weight: 300; }
 .nav-logo { gap: 0.3em; }
 
 .nav-toggle {
