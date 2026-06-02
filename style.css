@@ -45,7 +45,7 @@ nav {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  padding: 0 max(48px, calc((100vw - 1600px) / 2 + 96px));
+  padding: 0 max(48px, calc((100vw - 1800px) / 2 + 96px));
   height: 72px;
   display: flex;
   align-items: center;
@@ -105,7 +105,7 @@ body.menu-open { overflow: hidden; }
   align-items: center;
   position: fixed;
   top: 0;
-  right: max(48px, calc((100vw - 1600px) / 2 + 96px));
+  right: max(48px, calc((100vw - 1800px) / 2 + 96px));
   height: 72px;
   z-index: 101;
 }
@@ -191,7 +191,7 @@ main {
 
 .grid-section {
   padding: 96px 96px 96px;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
@@ -698,7 +698,7 @@ footer a:hover {
   column-gap: 24px;
   padding: 96px 96px 48px;
   overflow: hidden;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
@@ -720,7 +720,7 @@ footer a:hover {
 
 .project-back {
   padding: 0 96px 96px;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
@@ -746,7 +746,7 @@ footer a:hover {
   display: flex;
   gap: 24px;
   padding: 96px 96px 48px;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
@@ -782,6 +782,8 @@ footer a:hover {
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
   padding: 64px 96px 96px;
+  max-width: 1800px;
+  margin: 0 auto;
 }
 
 .publicatie-cover {
