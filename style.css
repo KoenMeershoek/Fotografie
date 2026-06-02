@@ -191,6 +191,8 @@ main {
 
 .grid-section {
   padding: 96px 96px 96px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .grid-filter {
