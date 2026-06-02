@@ -61,7 +61,7 @@ nav.scrolled {
 .nav-logo {
   font-family: 'Roboto', sans-serif;
   font-size: 20px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--text);
   text-decoration: none;
