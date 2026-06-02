@@ -46,7 +46,7 @@ nav {
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 max(48px, calc((100vw - 1800px) / 2 + 96px));
-  height: 72px;
+  height: 108px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -106,7 +106,7 @@ body.menu-open { overflow: hidden; }
   position: fixed;
   top: 0;
   right: max(48px, calc((100vw - 1800px) / 2 + 96px));
-  height: 72px;
+  height: 108px;
   z-index: 101;
 }
 
@@ -146,7 +146,7 @@ body.menu-open { overflow: hidden; }
 /* ---- PAGINA WRAPPER ---- */
 
 main {
-  padding-top: 72px;
+  padding-top: 108px;
   flex: 1;
 }
 
@@ -251,10 +251,10 @@ main {
 
   .nav-links {
     position: fixed;
-    top: 72px;
+    top: 108px;
     right: 0;
     width: 100%;
-    height: calc(100% - 72px);
+    height: calc(100% - 108px);
     background: #ffffff;
     flex-direction: column;
     align-items: flex-start;
