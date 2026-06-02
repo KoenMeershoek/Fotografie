@@ -60,7 +60,6 @@ nav.scrolled {
 
 .nav-logo {
   font-family: 'Roboto', sans-serif;
-  font-weight: 700;
   font-size: 28px;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -70,6 +69,9 @@ nav.scrolled {
   z-index: 102;
   position: relative;
 }
+
+.nav-logo-light { font-weight: 300; }
+.nav-logo-bold  { font-weight: 700; }
 
 .nav-toggle {
   display: none;
