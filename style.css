@@ -783,7 +783,7 @@ footer a:hover {
 
 .publicaties-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
   padding: 64px 96px 96px;
   max-width: 1800px;
