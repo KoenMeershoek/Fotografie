@@ -723,6 +723,10 @@ footer a:hover {
 }
 
 .project-back {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
   padding: 0 96px 96px;
   max-width: 1800px;
   margin: 0 auto;
