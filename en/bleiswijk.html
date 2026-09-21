@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Over mij - Koen Meershoek Fotografie</title>
-  <meta name="description" content="Meer over Koen Meershoek, fotograaf gespecialiseerd in film fotografie." />
-  <link rel="icon" href="images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
-  <link rel="stylesheet" href="style.css" />
+  <title>ArchitectuurMAKEN - Kindcentrum Bleiswijk - Koen Meershoek Fotografie</title>
+  <meta name="description" content="ArchitectuurMAKEN - Kindcentrum Bleiswijk photography project." />
+  <link rel="icon" href="../images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
 
@@ -20,54 +20,42 @@
         </button>
   </nav>
   <ul class="nav-links">
-      <li><a href="index.html">Werk</a></li>
-      <li><a href="publicaties.html">Publicaties</a></li>
-      <li><a href="about.html" class="active">Over mij</a></li>
+      <li><a href="index.html">Work</a></li>
+      <li><a href="publicaties.html">Publications</a></li>
+      <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="https://3mp.nl" class="nav-brand" target="_blank" rel="noopener"><img src="images/3mp-logo1.png" alt="3MP" /></a></li>
+      <li><a href="https://3mp.nl" class="nav-brand" target="_blank" rel="noopener"><img src="../images/3mp-logo1.png" alt="3MP" /></a></li>
     </ul>
   <div class="nav-overlay"></div>
 
   <main>
 
-    <div class="about-grid">
+    <div class="project-grid">
+      <div class="photo-item"><img src="../images/AM%20-%20Bleiswijk/Koen%20Meershoek_3MP_ArchitectuurMAKEN-Kindcentrum%20Bleiswijk-2000px-7.jpg" alt="ArchitectuurMAKEN - Kindcentrum Bleiswijk" loading="lazy" /><div class="photo-overlay"></div></div>
+      <div class="photo-item"><img src="../images/AM%20-%20Bleiswijk/Koen%20Meershoek_3MP_ArchitectuurMAKEN-Kindcentrum%20Bleiswijk-2000px-13.jpg" alt="ArchitectuurMAKEN - Kindcentrum Bleiswijk" loading="lazy" /><div class="photo-overlay"></div></div>
+      <div class="photo-item"><img src="../images/AM%20-%20Bleiswijk/Koen%20Meershoek_3MP_ArchitectuurMAKEN-Kindcentrum%20Bleiswijk-2000px-31.jpg" alt="ArchitectuurMAKEN - Kindcentrum Bleiswijk" loading="lazy" /><div class="photo-overlay"></div></div>
+      <div class="photo-item"><img src="../images/Koen%20Meershoek_3MP_ArchitectuurMAKEN-Kindcentrum%20Bleiswijk-2000px-22.jpg" alt="ArchitectuurMAKEN - Kindcentrum Bleiswijk" loading="lazy" /><div class="photo-overlay"></div></div>
+      <div class="photo-item"><img src="../images/Koen%20Meershoek_3MP_ArchitectuurMAKEN-Kindcentrum%20Bleiswijk-2000px-32.jpg" alt="ArchitectuurMAKEN - Kindcentrum Bleiswijk" loading="lazy" /><div class="photo-overlay"></div></div>
+      <div class="photo-item"><img src="../images/Koen%20Meershoek_3MP_ArchitectuurMAKEN-Kindcentrum%20Bleiswijk-2000px-5.jpg" alt="ArchitectuurMAKEN - Kindcentrum Bleiswijk" loading="lazy" /><div class="photo-overlay"></div></div>
+    </div>
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-prev" aria-label="Previous">&#8249;</button>
+      <button class="lightbox-close" aria-label="Close">&times;</button>
+      <button class="lightbox-next" aria-label="Next">&#8250;</button>
+      <img src="" alt="" id="lightbox-img" />
+    </div>
 
-      <!-- JOUW FOTO
-           Vervang door je eigen profielfoto.
-           Zet het bestand in de map naast dit HTML-bestand.
-           Voorbeeld: src="fotos/over-mij.jpg"
-      -->
-      <div>
-        <img
-          class="about-image"
-          src="images/1697119823282.jpg"
-          alt="Koen Meershoek"
-        />
-      </div>
 
-      <!-- JOUW TEKST -->
-      <div class="about-content">
-
-        <p>
-          Koen Meershoek is een fotograaf uit Den Haag met een bijzondere weg naar zijn vak. Fotografie begon als passie, maar het was zijn werk als filmmaker bij 3MP - film &amp; fotografie dat die passie opnieuw aanwakkerde.
-        </p>
-
-        <p>
-          Als mede-eigenaar van 3MP werkt hij nauw samen met Paul Scholte en Maarten van Nierop, beiden opgeleid als architect aan de TU Delft, en het is die samenwerking die zijn blik op de gebouwde omgeving heeft gevormd. Door hun ogen leerde hij kijken naar ruimte, licht en structuur, en raakte hij gefascineerd door architectuur als onderwerp.
-        </p>
-
-        <p>
-          Die fascinatie is nu de rode draad in zijn fotografisch werk.
-        </p>
-
-      </div>
+    <div class="project-back">
+      <a href="index.html">← Back to work</a>
+      <a href="camdentown.html">Next project →</a>
     </div>
 
   </main>
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Koen Meershoek. Alle rechten voorbehouden.</p>
+    <p>&copy; 2026 Koen Meershoek. All rights reserved.</p>
     
     <div class="footer-right"><div class="footer-social">
       <a href="https://instagram.com/Koens_Angle" target="_blank" rel="noopener" aria-label="Instagram">
@@ -78,13 +66,17 @@
       </a>
     </div>
       <a href="contact.html" class="footer-contact-link">Contact</a>
-      <div class="footer-lang"><span class="lang-current">NL</span><span class="lang-sep">/</span><a href="en/about.html">ENG</a></div>
+      <div class="footer-lang"><a href="../bleiswijk.html">NL</a><span class="lang-sep">/</span><span class="lang-current">ENG</span></div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="../script.js"></script>
 </body>
 </html>
+
+
+
+
 
 
 

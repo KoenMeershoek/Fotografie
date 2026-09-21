@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Over mij - Koen Meershoek Fotografie</title>
-  <meta name="description" content="Meer over Koen Meershoek, fotograaf gespecialiseerd in film fotografie." />
-  <link rel="icon" href="images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Publications - Koen Meershoek Fotografie</title>
+  <meta name="description" content="Publications by Koen Meershoek Fotografie." />
+  <link rel="icon" href="../images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
 
@@ -20,54 +20,43 @@
         </button>
   </nav>
   <ul class="nav-links">
-      <li><a href="index.html">Werk</a></li>
-      <li><a href="publicaties.html">Publicaties</a></li>
-      <li><a href="about.html" class="active">Over mij</a></li>
+      <li><a href="index.html">Work</a></li>
+      <li><a href="publicaties.html" class="active">Publications</a></li>
+      <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="https://3mp.nl" class="nav-brand" target="_blank" rel="noopener"><img src="images/3mp-logo1.png" alt="3MP" /></a></li>
+      <li><a href="https://3mp.nl" class="nav-brand" target="_blank" rel="noopener"><img src="../images/3mp-logo1.png" alt="3MP" /></a></li>
     </ul>
   <div class="nav-overlay"></div>
 
   <main>
 
-    <div class="about-grid">
-
-      <!-- JOUW FOTO
-           Vervang door je eigen profielfoto.
-           Zet het bestand in de map naast dit HTML-bestand.
-           Voorbeeld: src="fotos/over-mij.jpg"
-      -->
-      <div>
-        <img
-          class="about-image"
-          src="images/1697119823282.jpg"
-          alt="Koen Meershoek"
-        />
+    <section class="publicaties-grid">
+      <div class="publicatie-cover">
+        <img src="../images/Publicaties/Cover-GWW_0524.jpg" alt="GWW cover" loading="lazy" />
       </div>
-
-      <!-- JOUW TEKST -->
-      <div class="about-content">
-
-        <p>
-          Koen Meershoek is een fotograaf uit Den Haag met een bijzondere weg naar zijn vak. Fotografie begon als passie, maar het was zijn werk als filmmaker bij 3MP - film &amp; fotografie dat die passie opnieuw aanwakkerde.
-        </p>
-
-        <p>
-          Als mede-eigenaar van 3MP werkt hij nauw samen met Paul Scholte en Maarten van Nierop, beiden opgeleid als architect aan de TU Delft, en het is die samenwerking die zijn blik op de gebouwde omgeving heeft gevormd. Door hun ogen leerde hij kijken naar ruimte, licht en structuur, en raakte hij gefascineerd door architectuur als onderwerp.
-        </p>
-
-        <p>
-          Die fascinatie is nu de rode draad in zijn fotografisch werk.
-        </p>
-
+      <div class="publicatie-cover">
+        <img src="../images/Publicaties/cover-Het-Houtblad-7-2024-1400x1980-1-1086x1536.jpg" alt="Het Houtblad cover" loading="lazy" />
       </div>
+      <div class="publicatie-cover">
+        <img src="../images/Publicaties/wegenbouw%20artikel.png" alt="Wegenbouw article" loading="lazy" />
+      </div>
+      <div class="publicatie-cover">
+        <img src="../images/Publicaties/712_2327-meerhoutmagazine_230x297-0703-2-1.jpg" alt="Meerhout magazine" loading="lazy" />
+      </div>
+    </section>
+
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-prev" aria-label="Previous">&#8249;</button>
+      <button class="lightbox-close" aria-label="Close">&times;</button>
+      <button class="lightbox-next" aria-label="Next">&#8250;</button>
+      <img src="" alt="" id="lightbox-img" />
     </div>
 
   </main>
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Koen Meershoek. Alle rechten voorbehouden.</p>
+    <p>&copy; 2026 Koen Meershoek. All rights reserved.</p>
     
     <div class="footer-right"><div class="footer-social">
       <a href="https://instagram.com/Koens_Angle" target="_blank" rel="noopener" aria-label="Instagram">
@@ -78,14 +67,13 @@
       </a>
     </div>
       <a href="contact.html" class="footer-contact-link">Contact</a>
-      <div class="footer-lang"><span class="lang-current">NL</span><span class="lang-sep">/</span><a href="en/about.html">ENG</a></div>
+      <div class="footer-lang"><a href="../publicaties.html">NL</a><span class="lang-sep">/</span><span class="lang-current">ENG</span></div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="../script.js"></script>
 </body>
 </html>
-
 
 
 

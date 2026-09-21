@@ -695,6 +695,31 @@ footer a:hover {
   color: var(--text);
 }
 
+.footer-lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.footer-lang a {
+  color: var(--text-muted);
+}
+
+.footer-lang a:hover {
+  color: var(--text);
+}
+
+.footer-lang .lang-current {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.footer-lang .lang-sep {
+  color: var(--border);
+}
+
 /* ---- PROJECT PAGES ---- */
 
 .project-grid {
