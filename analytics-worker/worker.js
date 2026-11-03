@@ -75,8 +75,18 @@ async function handleCollect(request, env, url, corsHeaders) {
   const uvKey = `uv:${day}`;
   const raw = await env.ANALYTICS.get(uvKey);
   const seen = raw ? JSON.parse(raw) : {};
+  const isNewToday = !seen[visitorId];
   seen[visitorId] = true;
   await env.ANALYTICS.put(uvKey, JSON.stringify(seen), { expirationTtl: 60 * 60 * 24 * 95 });
+
+  // Running, never-expiring total of unique-visitor-days, i.e. "total
+  // unique visitors" summed over all time rather than just the 30-day
+  // window shown in the daily chart. Only bumped the first time this
+  // visitor's daily hash is seen today, so it still counts "unique per
+  // day", just accumulated forever instead of discarded after 95 days.
+  if (isNewToday) {
+    await incrementCounter(env, 'uv_total', null);
+  }
 
   return new Response('ok', { headers: corsHeaders });
 }
@@ -104,7 +114,9 @@ async function handleStats(env, corsHeaders) {
     result.push({ date: day, pageviews, uniqueVisitors });
   }
 
-  return new Response(JSON.stringify(result), {
+  const totalUniqueVisitors = parseInt((await env.ANALYTICS.get('uv_total')) || '0', 10);
+
+  return new Response(JSON.stringify({ days: result, totalUniqueVisitors }), {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   });
 }
@@ -142,6 +154,9 @@ async function handleReset(env, corsHeaders) {
       cursor = list.list_complete ? undefined : list.cursor;
     } while (cursor);
   }
+
+  await env.ANALYTICS.delete('uv_total');
+  deleted += 1;
 
   return new Response(JSON.stringify({ ok: true, deleted }), {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -360,11 +360,13 @@
       contentEl.hidden = false;
 
       try {
-        var days = await res.json();
+        var statsData = await res.json();
+        var days = statsData.days;
         var today = days[days.length - 1];
         var yesterday = days[days.length - 2] || { uniqueVisitors: 0, pageviews: 0 };
 
         cardsEl.innerHTML =
+          '<div class="dash-card"><div class="num">' + statsData.totalUniqueVisitors + '</div><div class="label">Totaal unieke bezoekers</div></div>' +
           '<div class="dash-card"><div class="num">' + today.uniqueVisitors + '</div><div class="label">Unieke bezoekers vandaag</div></div>' +
           '<div class="dash-card"><div class="num">' + today.pageviews + '</div><div class="label">Paginaweergaven vandaag</div></div>' +
           '<div class="dash-card"><div class="num">' + yesterday.uniqueVisitors + '</div><div class="label">Unieke bezoekers gisteren</div></div>';
