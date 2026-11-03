@@ -165,6 +165,28 @@
       font-size: 13px;
       color: var(--text-muted);
     }
+    .dash-reset-row {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .dash-reset-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dash-reset-btn:hover {
+      border-color: var(--text);
+      color: var(--text);
+    }
 
     @media (max-width: 900px) {
       .dash-wrap { padding: 0 24px 72px; }
@@ -201,7 +223,11 @@
     <div class="dash-wrap">
 
       <form class="dash-login" id="dash-login">
-        <label for="dash-password" class="dash-chart-label">Wachtwoord</label>
+        <label for="dash-username" class="dash-chart-label">Gebruikersnaam</label>
+        <div class="dash-login-row">
+          <input type="text" id="dash-username" autocomplete="username" />
+        </div>
+        <label for="dash-password" class="dash-chart-label" style="margin-top: 16px; display: block;">Wachtwoord</label>
         <div class="dash-login-row">
           <input type="password" id="dash-password" autocomplete="current-password" />
           <button type="submit" class="btn-submit">Bekijken</button>
@@ -222,6 +248,11 @@
         <div class="dash-pages">
           <p class="dash-chart-label">Populairste projecten (totaal aantal keer bekeken)</p>
           <div id="dash-pages-list"><p class="dash-status">Laden...</p></div>
+        </div>
+
+        <div class="dash-reset-row">
+          <button type="button" class="dash-reset-btn" id="dash-reset-btn">Alles op 0 zetten</button>
+          <p class="dash-status" id="dash-reset-status"></p>
         </div>
       </div>
 
@@ -290,15 +321,22 @@
     var loginForm = document.getElementById('dash-login');
     var loginError = document.getElementById('dash-login-error');
     var contentEl = document.getElementById('dash-content');
-    var SESSION_KEY = 'dashboardKey';
+    var resetBtn = document.getElementById('dash-reset-btn');
+    var resetStatus = document.getElementById('dash-reset-status');
+    var SESSION_KEY = 'dashboardCreds';
+    var currentHeaders = null;
 
-    async function loadDashboard(password) {
+    function credsToHeaders(username, password) {
+      return { 'X-Dashboard-User': username, 'X-Dashboard-Key': password };
+    }
+
+    async function loadDashboard(username, password) {
       if (!window.ANALYTICS_WORKER_URL || window.ANALYTICS_WORKER_URL.indexOf('REPLACE-ME') !== -1) {
         loginError.textContent = 'Nog niet ingesteld: vul de Worker-URL in analytics-config.js in.';
         return;
       }
 
-      var headers = { 'X-Dashboard-Key': password };
+      var headers = credsToHeaders(username, password);
 
       var res;
       try {
@@ -310,14 +348,15 @@
 
       if (res.status === 401) {
         try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
-        loginError.textContent = 'Onjuist wachtwoord.';
+        loginError.textContent = 'Onjuiste gebruikersnaam of wachtwoord.';
         return;
       }
 
-      // Password accepted: remember it for the rest of this browser tab
-      // session (cleared automatically when the tab closes) and reveal
-      // the real dashboard.
-      try { sessionStorage.setItem(SESSION_KEY, password); } catch (e) {}
+      // Credentials accepted: remember them for the rest of this browser
+      // tab session (cleared automatically when the tab closes) and
+      // reveal the real dashboard.
+      currentHeaders = headers;
+      try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ username: username, password: password })); } catch (e) {}
       loginForm.hidden = true;
       contentEl.hidden = false;
 
@@ -372,14 +411,37 @@
     loginForm.addEventListener('submit', function (e) {
       e.preventDefault();
       loginError.textContent = '';
-      loadDashboard(document.getElementById('dash-password').value);
+      loadDashboard(
+        document.getElementById('dash-username').value,
+        document.getElementById('dash-password').value
+      );
+    });
+
+    resetBtn.addEventListener('click', async function () {
+      if (!currentHeaders) return;
+      var confirmed = confirm('Weet je het zeker? Alle bezoekersstatistieken worden permanent naar 0 gezet.');
+      if (!confirmed) return;
+
+      resetStatus.textContent = 'Bezig met resetten...';
+      try {
+        var res = await fetch(window.ANALYTICS_WORKER_URL + '/reset', {
+          method: 'POST',
+          headers: currentHeaders,
+        });
+        if (!res.ok) throw new Error('reset failed');
+        resetStatus.textContent = 'Klaar, alles staat weer op 0.';
+        var creds = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
+        loadDashboard(creds.username, creds.password);
+      } catch (e) {
+        resetStatus.textContent = 'Resetten mislukt. Probeer het nog eens.';
+      }
     });
 
     // Already unlocked earlier in this tab? Skip straight to the data.
     (function () {
       var saved;
-      try { saved = sessionStorage.getItem(SESSION_KEY); } catch (e) {}
-      if (saved) loadDashboard(saved);
+      try { saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch (e) {}
+      if (saved) loadDashboard(saved.username, saved.password);
     })();
   </script>
   <script src="script.js"></script>

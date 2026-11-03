@@ -1,10 +1,11 @@
 // Cloudflare Worker — minimal, privacy-friendly analytics for koenmeershoek.nl
 //
-// Three endpoints:
-//   GET /collect?path=/index.html   records one pageview (public, no password —
+// Four endpoints:
+//   GET /collect?path=/index.html   records one pageview (public, no login —
 //                                    every site visitor's browser calls this)
-//   GET /stats                      returns the last 30 days as JSON (password-protected)
-//   GET /pages                      returns all-time pageviews per page (password-protected)
+//   GET /stats                      returns the last 30 days as JSON (login-protected)
+//   GET /pages                      returns all-time pageviews per page (login-protected)
+//   POST /reset                     wipes all recorded stats back to 0 (login-protected)
 //
 // "Unique visitor" = a hash of (secret salt + today's date + IP + User-Agent).
 // The date is part of the hash input, so the same person hashes to a
@@ -13,16 +14,17 @@
 // cookie-free and GDPR-exempt: no personal data is retained.
 //
 // The dashboard itself (dashboard.html) stays publicly reachable — anyone
-// who finds the URL just sees an empty page, because /stats and /pages
-// refuse to answer without the correct X-Dashboard-Key header.
+// who finds the URL just sees an empty page, because the protected
+// endpoints refuse to answer without the correct X-Dashboard-User /
+// X-Dashboard-Key headers.
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const corsHeaders = {
       'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Dashboard-Key',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Dashboard-User, X-Dashboard-Key',
     };
 
     if (request.method === 'OPTIONS') {
@@ -31,14 +33,18 @@ export default {
     if (url.pathname === '/collect') {
       return handleCollect(request, env, url, corsHeaders);
     }
-    if (url.pathname === '/stats' || url.pathname === '/pages') {
-      if (request.headers.get('X-Dashboard-Key') !== env.DASHBOARD_PASSWORD) {
+    if (url.pathname === '/stats' || url.pathname === '/pages' || url.pathname === '/reset') {
+      const userOk = request.headers.get('X-Dashboard-User') === env.DASHBOARD_USERNAME;
+      const passOk = request.headers.get('X-Dashboard-Key') === env.DASHBOARD_PASSWORD;
+      if (!userOk || !passOk) {
         return new Response(JSON.stringify({ error: 'unauthorized' }), {
           status: 401,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-      return url.pathname === '/stats' ? handleStats(env, corsHeaders) : handlePages(env, corsHeaders);
+      if (url.pathname === '/stats') return handleStats(env, corsHeaders);
+      if (url.pathname === '/pages') return handlePages(env, corsHeaders);
+      return handleReset(env, corsHeaders);
     }
     return new Response('Not found', { status: 404, headers: corsHeaders });
   },
@@ -119,6 +125,25 @@ async function handlePages(env, corsHeaders) {
   pages.sort((a, b) => b.pageviews - a.pageviews);
 
   return new Response(JSON.stringify(pages), {
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
+}
+
+async function handleReset(env, corsHeaders) {
+  const prefixes = ['pv:', 'page:', 'pagetotal:', 'uv:'];
+  let deleted = 0;
+
+  for (const prefix of prefixes) {
+    let cursor;
+    do {
+      const list = await env.ANALYTICS.list({ prefix, cursor });
+      await Promise.all(list.keys.map((key) => env.ANALYTICS.delete(key.name)));
+      deleted += list.keys.length;
+      cursor = list.list_complete ? undefined : list.cursor;
+    } while (cursor);
+  }
+
+  return new Response(JSON.stringify({ ok: true, deleted }), {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   });
 }
