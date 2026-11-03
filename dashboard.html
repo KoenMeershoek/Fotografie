@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Bezoekersstatistieken - Koen Meershoek Fotografie</title>
+  <link rel="icon" href="images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .dash-wrap {
+      padding: 96px 48px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .dash-cards {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .dash-card {
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+      min-width: 160px;
+    }
+    .dash-card .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      line-height: 1;
+      color: var(--text);
+    }
+    .dash-card .label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .dash-chart {
+      border: 1px solid var(--border);
+      padding: 24px;
+      overflow-x: auto;
+    }
+    .dash-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 180px;
+      min-width: 600px;
+    }
+    .dash-bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+    }
+    .dash-bar {
+      width: 100%;
+      background: var(--text);
+      opacity: 0.85;
+    }
+    .dash-bar-date {
+      font-size: 9px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+    .dash-status {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo"><span class="nav-logo-light">Koen Meershoek </span><span class="nav-logo-bold">Fotografie</span></a>
+  </nav>
+
+  <main>
+    <div class="dash-wrap">
+      <p class="hero-label">Alleen voor jou</p>
+      <h1 style="font-family:'Cormorant Garamond', serif; font-weight:300; font-size:40px; margin-bottom:40px;">Bezoekersstatistieken</h1>
+
+      <div class="dash-cards" id="dash-cards">
+        <p class="dash-status">Laden...</p>
+      </div>
+
+      <div class="dash-chart">
+        <div class="dash-bars" id="dash-bars"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="analytics-config.js"></script>
+  <script>
+    (async function () {
+      var cardsEl = document.getElementById('dash-cards');
+      var barsEl = document.getElementById('dash-bars');
+
+      if (!window.ANALYTICS_WORKER_URL || window.ANALYTICS_WORKER_URL.indexOf('REPLACE-ME') !== -1) {
+        cardsEl.innerHTML = '<p class="dash-status">Nog niet ingesteld: vul de Worker-URL in analytics-config.js in.</p>';
+        return;
+      }
+
+      try {
+        var res = await fetch(window.ANALYTICS_WORKER_URL + '/stats');
+        var days = await res.json();
+
+        var today = days[days.length - 1];
+        var yesterday = days[days.length - 2] || { uniqueVisitors: 0, pageviews: 0 };
+
+        cardsEl.innerHTML =
+          '<div class="dash-card"><div class="num">' + today.uniqueVisitors + '</div><div class="label">Unieke bezoekers vandaag</div></div>' +
+          '<div class="dash-card"><div class="num">' + today.pageviews + '</div><div class="label">Paginaweergaven vandaag</div></div>' +
+          '<div class="dash-card"><div class="num">' + yesterday.uniqueVisitors + '</div><div class="label">Unieke bezoekers gisteren</div></div>';
+
+        var max = Math.max.apply(null, days.map(function (d) { return d.uniqueVisitors; }).concat([1]));
+
+        barsEl.innerHTML = days.map(function (d) {
+          var heightPct = Math.round((d.uniqueVisitors / max) * 100);
+          var shortDate = d.date.slice(5); // MM-DD
+          return '<div class="dash-bar-col" title="' + d.date + ': ' + d.uniqueVisitors + ' unieke bezoekers">' +
+            '<div class="dash-bar" style="height:' + Math.max(heightPct, 2) + '%"></div>' +
+            '<div class="dash-bar-date">' + shortDate + '</div>' +
+            '</div>';
+        }).join('');
+      } catch (e) {
+        cardsEl.innerHTML = '<p class="dash-status">Kon de statistieken niet ophalen. Is de Worker live?</p>';
+      }
+    })();
+  </script>
+</body>
+</html>
