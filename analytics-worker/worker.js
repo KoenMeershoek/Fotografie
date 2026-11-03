@@ -1,10 +1,11 @@
 // Cloudflare Worker — minimal, privacy-friendly analytics for koenmeershoek.nl
 //
-// Four endpoints:
-//   GET /collect?path=/index.html   records one pageview (public, no login —
-//                                    every site visitor's browser calls this)
+// Five endpoints:
+//   GET /collect?path=/index.html&ref=...   records one pageview (public, no
+//                                            login — every visitor's browser calls this)
 //   GET /stats                      returns the last 30 days as JSON (login-protected)
 //   GET /pages                      returns all-time pageviews per page (login-protected)
+//   GET /referrers                  returns all-time pageviews per traffic source (login-protected)
 //   POST /reset                     wipes all recorded stats back to 0 (login-protected)
 //
 // "Unique visitor" = a hash of (secret salt + today's date + IP + User-Agent).
@@ -33,7 +34,7 @@ export default {
     if (url.pathname === '/collect') {
       return handleCollect(request, env, url, corsHeaders);
     }
-    if (url.pathname === '/stats' || url.pathname === '/pages' || url.pathname === '/reset') {
+    if (url.pathname === '/stats' || url.pathname === '/pages' || url.pathname === '/referrers' || url.pathname === '/reset') {
       const userOk = request.headers.get('X-Dashboard-User') === env.DASHBOARD_USERNAME;
       const passOk = request.headers.get('X-Dashboard-Key') === env.DASHBOARD_PASSWORD;
       if (!userOk || !passOk) {
@@ -44,6 +45,7 @@ export default {
       }
       if (url.pathname === '/stats') return handleStats(env, corsHeaders);
       if (url.pathname === '/pages') return handlePages(env, corsHeaders);
+      if (url.pathname === '/referrers') return handleReferrers(env, corsHeaders);
       return handleReset(env, corsHeaders);
     }
     return new Response('Not found', { status: 404, headers: corsHeaders });
@@ -88,7 +90,27 @@ async function handleCollect(request, env, url, corsHeaders) {
     await incrementCounter(env, 'uv_total', null);
   }
 
+  // Where visitors came from, all-time. Navigating between pages on the
+  // site itself isn't a traffic source, so that's skipped entirely
+  // rather than drowning out the real external referrers.
+  const source = classifyReferrer(url.searchParams.get('ref') || '');
+  if (source) {
+    await incrementCounter(env, `reftotal:${source}`, null);
+  }
+
   return new Response('ok', { headers: corsHeaders });
+}
+
+function classifyReferrer(ref) {
+  if (!ref) return 'Direct (geen verwijzer)';
+  let hostname;
+  try {
+    hostname = new URL(ref).hostname.replace(/^www\./, '');
+  } catch (e) {
+    return null;
+  }
+  if (hostname === 'koenmeershoek.nl') return null;
+  return hostname.slice(0, 100);
 }
 
 async function incrementCounter(env, key, expirationTtl = 60 * 60 * 24 * 95) {
@@ -141,8 +163,28 @@ async function handlePages(env, corsHeaders) {
   });
 }
 
+async function handleReferrers(env, corsHeaders) {
+  const referrers = [];
+  let cursor;
+  do {
+    const list = await env.ANALYTICS.list({ prefix: 'reftotal:', cursor });
+    for (const key of list.keys) {
+      const source = key.name.slice('reftotal:'.length);
+      const pageviews = parseInt((await env.ANALYTICS.get(key.name)) || '0', 10);
+      referrers.push({ source, pageviews });
+    }
+    cursor = list.list_complete ? undefined : list.cursor;
+  } while (cursor);
+
+  referrers.sort((a, b) => b.pageviews - a.pageviews);
+
+  return new Response(JSON.stringify(referrers), {
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
+}
+
 async function handleReset(env, corsHeaders) {
-  const prefixes = ['pv:', 'page:', 'pagetotal:', 'uv:'];
+  const prefixes = ['pv:', 'page:', 'pagetotal:', 'uv:', 'reftotal:'];
   let deleted = 0;
 
   for (const prefix of prefixes) {

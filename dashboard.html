@@ -244,6 +244,11 @@
           <div id="dash-pages-list"><p class="dash-status">Laden...</p></div>
         </div>
 
+        <div class="dash-pages">
+          <p class="dash-chart-label">Waar bezoekers vandaan komen</p>
+          <div id="dash-referrers-list"><p class="dash-status">Laden...</p></div>
+        </div>
+
         <div class="dash-reset-row">
           <button type="button" class="dash-reset-btn" id="dash-reset-btn">Alles op 0 zetten</button>
           <p class="dash-status" id="dash-reset-status"></p>
@@ -312,6 +317,7 @@
     var cardsEl = document.getElementById('dash-cards');
     var barsEl = document.getElementById('dash-bars');
     var pagesEl = document.getElementById('dash-pages-list');
+    var referrersEl = document.getElementById('dash-referrers-list');
     var loginForm = document.getElementById('dash-login');
     var loginError = document.getElementById('dash-login-error');
     var contentEl = document.getElementById('dash-content');
@@ -401,6 +407,29 @@
         }).join('');
       } catch (e) {
         pagesEl.innerHTML = '<p class="dash-status">Kon de populairste projecten niet ophalen.</p>';
+      }
+
+      try {
+        var refsRes = await fetch(window.ANALYTICS_WORKER_URL + '/referrers', { headers: headers });
+        var referrers = await refsRes.json();
+
+        if (!referrers.length) {
+          referrersEl.innerHTML = '<p class="dash-status">Nog geen bezoeken geregistreerd.</p>';
+          return;
+        }
+
+        var refsMax = referrers[0].pageviews;
+
+        referrersEl.innerHTML = referrers.map(function (r) {
+          var widthPct = Math.round((r.pageviews / refsMax) * 100);
+          return '<div class="dash-page-row">' +
+            '<div class="dash-page-name" title="' + r.source + '">' + r.source + '</div>' +
+            '<div class="dash-page-bar-wrap"><div class="dash-page-bar" style="width:' + Math.max(widthPct, 2) + '%"></div></div>' +
+            '<div class="dash-page-count">' + r.pageviews + '</div>' +
+            '</div>';
+        }).join('');
+      } catch (e) {
+        referrersEl.innerHTML = '<p class="dash-status">Kon de verwijzers niet ophalen.</p>';
       }
     }
 
