@@ -95,6 +95,45 @@
       font-size: 13px;
       line-height: 1.75;
     }
+    .dash-pages {
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .dash-page-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .dash-page-row:last-child {
+      border-bottom: none;
+    }
+    .dash-page-name {
+      flex: 0 0 260px;
+      font-size: 13px;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .dash-page-bar-wrap {
+      flex: 1;
+      background: var(--hover);
+      height: 10px;
+    }
+    .dash-page-bar {
+      background: var(--text);
+      height: 100%;
+      opacity: 0.85;
+    }
+    .dash-page-count {
+      flex: 0 0 44px;
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
 
     @media (max-width: 900px) {
       .dash-wrap { padding: 0 24px 72px; }
@@ -137,6 +176,11 @@
         <p class="dash-chart-label">Unieke bezoekers, laatste 30 dagen</p>
         <div class="dash-bars" id="dash-bars"></div>
       </div>
+
+      <div class="dash-pages">
+        <p class="dash-chart-label">Populairste projecten (totaal aantal keer bekeken)</p>
+        <div id="dash-pages-list"><p class="dash-status">Laden...</p></div>
+      </div>
     </div>
 
   </main>
@@ -158,12 +202,52 @@
 
   <script src="analytics-config.js"></script>
   <script>
+    // Friendly labels for each tracked path, so the ranking reads like
+    // project names instead of raw URLs.
+    var PAGE_LABELS = {
+      '/': 'Home',
+      '/index.html': 'Home',
+      '/en/': 'Home (EN)',
+      '/en/index.html': 'Home (EN)',
+      '/about.html': 'Over mij',
+      '/en/about.html': 'About (EN)',
+      '/contact.html': 'Contact',
+      '/en/contact.html': 'Contact (EN)',
+      '/publicaties.html': 'Publicaties',
+      '/en/publicaties.html': 'Publications (EN)',
+      '/bedankt.html': 'Bedankt',
+      '/en/bedankt.html': 'Thank you (EN)',
+      '/camdentown.html': 'Vakwerk Architecten - Camden Town',
+      '/en/camdentown.html': 'Camden Town (EN)',
+      '/nsstationsmetra.html': 'NS Stations - Metra',
+      '/en/nsstationsmetra.html': 'NS Stations - Metra (EN)',
+      '/linkwooddeark.html': 'Linkwood - The Ark',
+      '/en/linkwooddeark.html': 'The Ark (EN)',
+      '/houtbouwvalckensteyn.html': 'Linkwood - Houtbouw Valckensteyn',
+      '/en/houtbouwvalckensteyn.html': 'Houtbouw Valckensteyn (EN)',
+      '/krimpenerwaard.html': 'EHA - Gemeentehuis Krimpenerwaard',
+      '/en/krimpenerwaard.html': 'Krimpenerwaard (EN)',
+      '/valckensteyn.html': 'Linkwood - Valckensteyn',
+      '/en/valckensteyn.html': 'Valckensteyn (EN)',
+      '/bleiswijk.html': 'ArchitectuurMAKEN - Kindcentrum Bleiswijk',
+      '/en/bleiswijk.html': 'Bleiswijk (EN)',
+      '/linkwood.html': 'Linkwood - De Groene Redoute',
+      '/en/linkwood.html': 'De Groene Redoute (EN)',
+      '/dashboard.html': 'Dashboard',
+    };
+
+    function pageLabel(path) {
+      return PAGE_LABELS[path] || path;
+    }
+
     (async function () {
       var cardsEl = document.getElementById('dash-cards');
       var barsEl = document.getElementById('dash-bars');
+      var pagesEl = document.getElementById('dash-pages-list');
 
       if (!window.ANALYTICS_WORKER_URL || window.ANALYTICS_WORKER_URL.indexOf('REPLACE-ME') !== -1) {
         cardsEl.innerHTML = '<p class="dash-status">Nog niet ingesteld: vul de Worker-URL in analytics-config.js in.</p>';
+        pagesEl.innerHTML = '';
         return;
       }
 
@@ -191,6 +275,29 @@
         }).join('');
       } catch (e) {
         cardsEl.innerHTML = '<p class="dash-status">Kon de statistieken niet ophalen. Is de Worker live?</p>';
+      }
+
+      try {
+        var pagesRes = await fetch(window.ANALYTICS_WORKER_URL + '/pages');
+        var pages = await pagesRes.json();
+
+        if (!pages.length) {
+          pagesEl.innerHTML = '<p class="dash-status">Nog geen pagina-bezoeken geregistreerd.</p>';
+          return;
+        }
+
+        var pagesMax = pages[0].pageviews;
+
+        pagesEl.innerHTML = pages.map(function (p) {
+          var widthPct = Math.round((p.pageviews / pagesMax) * 100);
+          return '<div class="dash-page-row">' +
+            '<div class="dash-page-name" title="' + p.path + '">' + pageLabel(p.path) + '</div>' +
+            '<div class="dash-page-bar-wrap"><div class="dash-page-bar" style="width:' + Math.max(widthPct, 2) + '%"></div></div>' +
+            '<div class="dash-page-count">' + p.pageviews + '</div>' +
+            '</div>';
+        }).join('');
+      } catch (e) {
+        pagesEl.innerHTML = '<p class="dash-status">Kon de populairste projecten niet ophalen.</p>';
       }
     })();
   </script>

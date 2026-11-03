@@ -1,8 +1,9 @@
 // Cloudflare Worker — minimal, privacy-friendly analytics for koenmeershoek.nl
 //
-// Two endpoints:
+// Three endpoints:
 //   GET /collect?path=/index.html   records one pageview
 //   GET /stats                      returns the last 30 days as JSON, for the dashboard
+//   GET /pages                      returns all-time pageviews per page, for the dashboard
 //
 // "Unique visitor" = a hash of (secret salt + today's date + IP + User-Agent).
 // The date is part of the hash input, so the same person hashes to a
@@ -27,6 +28,9 @@ export default {
     if (url.pathname === '/stats') {
       return handleStats(env, corsHeaders);
     }
+    if (url.pathname === '/pages') {
+      return handlePages(env, corsHeaders);
+    }
     return new Response('Not found', { status: 404, headers: corsHeaders });
   },
 };
@@ -45,6 +49,11 @@ async function handleCollect(request, env, url, corsHeaders) {
   // Pageviews for this specific page, for the day
   await incrementCounter(env, `page:${day}:${path}`);
 
+  // All-time pageviews for this specific page (never expires), so the
+  // "which project gets clicked on" ranking survives beyond the 95-day
+  // window of the daily counters above.
+  await incrementCounter(env, `pagetotal:${path}`, null);
+
   // Unique visitors for the day: a small JSON set of hashed visitor IDs.
   // Fine for a personal portfolio site's traffic volume; KV values can hold
   // up to 25MB, far more than we'll ever need here.
@@ -57,9 +66,10 @@ async function handleCollect(request, env, url, corsHeaders) {
   return new Response('ok', { headers: corsHeaders });
 }
 
-async function incrementCounter(env, key) {
+async function incrementCounter(env, key, expirationTtl = 60 * 60 * 24 * 95) {
   const current = parseInt((await env.ANALYTICS.get(key)) || '0', 10);
-  await env.ANALYTICS.put(key, String(current + 1), { expirationTtl: 60 * 60 * 24 * 95 });
+  const options = expirationTtl ? { expirationTtl } : {};
+  await env.ANALYTICS.put(key, String(current + 1), options);
 }
 
 async function handleStats(env, corsHeaders) {
@@ -80,6 +90,26 @@ async function handleStats(env, corsHeaders) {
   }
 
   return new Response(JSON.stringify(result), {
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
+}
+
+async function handlePages(env, corsHeaders) {
+  const pages = [];
+  let cursor;
+  do {
+    const list = await env.ANALYTICS.list({ prefix: 'pagetotal:', cursor });
+    for (const key of list.keys) {
+      const path = key.name.slice('pagetotal:'.length);
+      const pageviews = parseInt((await env.ANALYTICS.get(key.name)) || '0', 10);
+      pages.push({ path, pageviews });
+    }
+    cursor = list.list_complete ? undefined : list.cursor;
+  } while (cursor);
+
+  pages.sort((a, b) => b.pageviews - a.pageviews);
+
+  return new Response(JSON.stringify(pages), {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   });
 }
