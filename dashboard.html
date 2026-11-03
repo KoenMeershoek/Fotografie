@@ -8,6 +8,10 @@
   <link rel="icon" href="images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    .page-header {
+      padding-left: max(48px, calc((100vw - 1800px) / 2 + 96px));
+      padding-right: max(48px, calc((100vw - 1800px) / 2 + 96px));
+    }
     .dash-title {
       font-family: 'Roboto', sans-serif !important;
       text-transform: uppercase;
@@ -17,8 +21,7 @@
     .dash-title .nav-logo-light { font-weight: 700; }
     .dash-title .nav-logo-bold { font-weight: 300; }
     .dash-wrap {
-      padding: 0 48px 96px;
-      max-width: 1100px;
+      padding: 0 max(48px, calc((100vw - 1800px) / 2 + 96px)) 96px;
     }
     .dash-cards {
       display: flex;
