@@ -1,15 +1,20 @@
 // Cloudflare Worker — minimal, privacy-friendly analytics for koenmeershoek.nl
 //
 // Three endpoints:
-//   GET /collect?path=/index.html   records one pageview
-//   GET /stats                      returns the last 30 days as JSON, for the dashboard
-//   GET /pages                      returns all-time pageviews per page, for the dashboard
+//   GET /collect?path=/index.html   records one pageview (public, no password —
+//                                    every site visitor's browser calls this)
+//   GET /stats                      returns the last 30 days as JSON (password-protected)
+//   GET /pages                      returns all-time pageviews per page (password-protected)
 //
 // "Unique visitor" = a hash of (secret salt + today's date + IP + User-Agent).
 // The date is part of the hash input, so the same person hashes to a
 // different, unlinkable value every day. The raw IP is never stored —
 // only this one-way hash is written to KV. That's what makes this
 // cookie-free and GDPR-exempt: no personal data is retained.
+//
+// The dashboard itself (dashboard.html) stays publicly reachable — anyone
+// who finds the URL just sees an empty page, because /stats and /pages
+// refuse to answer without the correct X-Dashboard-Key header.
 
 export default {
   async fetch(request, env) {
@@ -17,6 +22,7 @@ export default {
     const corsHeaders = {
       'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Dashboard-Key',
     };
 
     if (request.method === 'OPTIONS') {
@@ -25,11 +31,14 @@ export default {
     if (url.pathname === '/collect') {
       return handleCollect(request, env, url, corsHeaders);
     }
-    if (url.pathname === '/stats') {
-      return handleStats(env, corsHeaders);
-    }
-    if (url.pathname === '/pages') {
-      return handlePages(env, corsHeaders);
+    if (url.pathname === '/stats' || url.pathname === '/pages') {
+      if (request.headers.get('X-Dashboard-Key') !== env.DASHBOARD_PASSWORD) {
+        return new Response(JSON.stringify({ error: 'unauthorized' }), {
+          status: 401,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+      return url.pathname === '/stats' ? handleStats(env, corsHeaders) : handlePages(env, corsHeaders);
     }
     return new Response('Not found', { status: 404, headers: corsHeaders });
   },

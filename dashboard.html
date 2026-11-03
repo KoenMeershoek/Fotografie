@@ -94,6 +94,35 @@
       font-size: 13px;
       line-height: 1.75;
     }
+    .dash-login {
+      max-width: 360px;
+      padding: 32px 0 8px;
+    }
+    .dash-login-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .dash-login-row input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 12px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .dash-login-row input:focus {
+      border-color: var(--text);
+    }
+    .dash-login #dash-login-error {
+      margin-top: 12px;
+      min-height: 1em;
+    }
     .dash-pages {
       border: 1px solid var(--border);
       padding: 24px;
@@ -167,19 +196,32 @@
     </div>
 
     <div class="dash-wrap">
-      <div class="dash-cards" id="dash-cards">
-        <p class="dash-status">Laden...</p>
+
+      <form class="dash-login" id="dash-login">
+        <label for="dash-password" class="dash-chart-label">Wachtwoord</label>
+        <div class="dash-login-row">
+          <input type="password" id="dash-password" autocomplete="current-password" />
+          <button type="submit" class="btn-submit">Bekijken</button>
+        </div>
+        <p class="dash-status" id="dash-login-error"></p>
+      </form>
+
+      <div id="dash-content" hidden>
+        <div class="dash-cards" id="dash-cards">
+          <p class="dash-status">Laden...</p>
+        </div>
+
+        <div class="dash-chart">
+          <p class="dash-chart-label">Unieke bezoekers, laatste 30 dagen</p>
+          <div class="dash-bars" id="dash-bars"></div>
+        </div>
+
+        <div class="dash-pages">
+          <p class="dash-chart-label">Populairste projecten (totaal aantal keer bekeken)</p>
+          <div id="dash-pages-list"><p class="dash-status">Laden...</p></div>
+        </div>
       </div>
 
-      <div class="dash-chart">
-        <p class="dash-chart-label">Unieke bezoekers, laatste 30 dagen</p>
-        <div class="dash-bars" id="dash-bars"></div>
-      </div>
-
-      <div class="dash-pages">
-        <p class="dash-chart-label">Populairste projecten (totaal aantal keer bekeken)</p>
-        <div id="dash-pages-list"><p class="dash-status">Laden...</p></div>
-      </div>
     </div>
 
   </main>
@@ -239,21 +281,45 @@
       return PAGE_LABELS[path] || path;
     }
 
-    (async function () {
-      var cardsEl = document.getElementById('dash-cards');
-      var barsEl = document.getElementById('dash-bars');
-      var pagesEl = document.getElementById('dash-pages-list');
+    var cardsEl = document.getElementById('dash-cards');
+    var barsEl = document.getElementById('dash-bars');
+    var pagesEl = document.getElementById('dash-pages-list');
+    var loginForm = document.getElementById('dash-login');
+    var loginError = document.getElementById('dash-login-error');
+    var contentEl = document.getElementById('dash-content');
+    var SESSION_KEY = 'dashboardKey';
 
+    async function loadDashboard(password) {
       if (!window.ANALYTICS_WORKER_URL || window.ANALYTICS_WORKER_URL.indexOf('REPLACE-ME') !== -1) {
-        cardsEl.innerHTML = '<p class="dash-status">Nog niet ingesteld: vul de Worker-URL in analytics-config.js in.</p>';
-        pagesEl.innerHTML = '';
+        loginError.textContent = 'Nog niet ingesteld: vul de Worker-URL in analytics-config.js in.';
         return;
       }
 
-      try {
-        var res = await fetch(window.ANALYTICS_WORKER_URL + '/stats');
-        var days = await res.json();
+      var headers = { 'X-Dashboard-Key': password };
 
+      var res;
+      try {
+        res = await fetch(window.ANALYTICS_WORKER_URL + '/stats', { headers: headers });
+      } catch (e) {
+        loginError.textContent = 'Kon geen verbinding maken. Is de Worker live?';
+        return;
+      }
+
+      if (res.status === 401) {
+        try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+        loginError.textContent = 'Onjuist wachtwoord.';
+        return;
+      }
+
+      // Password accepted: remember it for the rest of this browser tab
+      // session (cleared automatically when the tab closes) and reveal
+      // the real dashboard.
+      try { sessionStorage.setItem(SESSION_KEY, password); } catch (e) {}
+      loginForm.hidden = true;
+      contentEl.hidden = false;
+
+      try {
+        var days = await res.json();
         var today = days[days.length - 1];
         var yesterday = days[days.length - 2] || { uniqueVisitors: 0, pageviews: 0 };
 
@@ -273,11 +339,11 @@
             '</div>';
         }).join('');
       } catch (e) {
-        cardsEl.innerHTML = '<p class="dash-status">Kon de statistieken niet ophalen. Is de Worker live?</p>';
+        cardsEl.innerHTML = '<p class="dash-status">Kon de statistieken niet ophalen.</p>';
       }
 
       try {
-        var pagesRes = await fetch(window.ANALYTICS_WORKER_URL + '/pages');
+        var pagesRes = await fetch(window.ANALYTICS_WORKER_URL + '/pages', { headers: headers });
         var pages = await pagesRes.json();
 
         if (!pages.length) {
@@ -298,6 +364,19 @@
       } catch (e) {
         pagesEl.innerHTML = '<p class="dash-status">Kon de populairste projecten niet ophalen.</p>';
       }
+    }
+
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      loginError.textContent = '';
+      loadDashboard(document.getElementById('dash-password').value);
+    });
+
+    // Already unlocked earlier in this tab? Skip straight to the data.
+    (function () {
+      var saved;
+      try { saved = sessionStorage.getItem(SESSION_KEY); } catch (e) {}
+      if (saved) loadDashboard(saved);
     })();
   </script>
   <script src="script.js"></script>
