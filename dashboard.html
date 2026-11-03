@@ -8,20 +8,17 @@
   <link rel="icon" href="images/3MP%20logo%20round%20black%20OUTLINE.png" type="image/png" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    .page-header {
-      padding-left: max(48px, calc((100vw - 1800px) / 2 + 96px));
-      padding-right: max(48px, calc((100vw - 1800px) / 2 + 96px));
-    }
     .dash-title {
-      font-family: 'Roboto', sans-serif !important;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
-      font-size: clamp(28px, 4vw, 44px) !important;
+      letter-spacing: 0.08em;
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 32px;
     }
-    .dash-title .nav-logo-light { font-weight: 700; }
-    .dash-title .nav-logo-bold { font-weight: 300; }
     .dash-wrap {
-      padding: 0 max(48px, calc((100vw - 1800px) / 2 + 96px)) 96px;
+      padding: 96px max(48px, calc((100vw - 1800px) / 2 + 96px)) 96px;
     }
     .dash-cards {
       display: flex;
@@ -189,7 +186,7 @@
     }
 
     @media (max-width: 900px) {
-      .dash-wrap { padding: 0 24px 72px; }
+      .dash-wrap { padding: 72px 24px 72px; }
     }
   </style>
 </head>
@@ -215,11 +212,9 @@
 
   <main>
 
-    <div class="page-header">
-      <h1 class="dash-title"><span class="nav-logo-light">Bezoekers</span><span class="nav-logo-bold">statistieken</span></h1>
-    </div>
-
     <div class="dash-wrap">
+
+      <h1 class="dash-title">Bezoekersstatistieken</h1>
 
       <form class="dash-login" id="dash-login">
         <label for="dash-username" class="dash-chart-label">Gebruikersnaam</label>
